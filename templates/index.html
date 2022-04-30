@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>Python is awesome!</title>
+    </head>
+    <body>
+        <h1>Perífrasis</h1>
+        <form action="{{url_for('index')}}" method="post">
+          <label>Escribe el texto:</label>
+          <input type="text" name="sourceText" id="text"/>
+          <input type="submit" id ="submitText" value="Listo" />
+        </form>
+        <h1>Simplificado</h1>
+        <p>{{outputText}}</p>
+        <p>Congratulations! The HTTP Server is working!</p>
+        <script>
+            $(document).ready(function(){
+              $("submit").click(function(){
+                $.post("demo_test_post.asp",
+                {
+                  id: 0,
+                  text:  document.getElementById("text").value
+                },
+                function(data,status){
+                  alert("Data: " + data + "\nStatus: " + status);
+                });
+              });
+            });
+        </script>
+    </body>
+</html>
