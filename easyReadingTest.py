@@ -1,6 +1,6 @@
-from modules.utils.nlp  import easyReading
-from modules.utils.tests.testsCorpus  import corpus
-
+from modules.utils.periphrasisSimplifier  import periphrasisSimplifier
+from modules.utils.tests.testsCorpus import corpus
+import time
 def main():
 	json = { 'id': 9,
 			'name': 'Pauta - Evitar Perifrasis',
@@ -15,28 +15,31 @@ def main():
 				'''
 
 	for key, value in corpus.items():
-		#if key == 'Test 1':
-		json['originalText'] = value['originalText']	
-		json['reason'] = f"{reason} {value['periphrasisList']}"
-		actualValue = easyReading(json)
-		#print(f"Actual len: {len(actualValue)}")
-		#print(f"Expected len: {len(value['simplifiedText'])}")
+		tic = time.perf_counter()
+		jsonAux = periphrasisSimplifier(value['originalText'], value['periphrasisList'].replace('[','').replace(']', ''))
+		toc = time.perf_counter()
 
+		actualValue = jsonAux['simplifiedText']
+		explanation = jsonAux['explanation']
 		if actualValue != value['simplifiedText']:
 			print(f'---------------{key}: ERROR-----------------')
 
-			print(f"Expected {value['simplifiedText']}")
-			print(f"Actual {actualValue}")
+			print(f"Expected: {value['simplifiedText']}")
+			print(f"Actual: {actualValue}")
+			print(f"Explanation: {explanation}")
+			print(f"Time: {toc - tic:0.4f} seconds")
+
 			
 		else:
-			#print('---------------PASS-----------------') 
 			print(f'---------------{key}: PASS -----------------')
-			print(f"Original {value['originalText']}")
-			print(f"Simplified {actualValue}")
-			'''
-			print(f"Original {value['originalText']}")
-			print(f"Simplified {value['simplifiedText']}")
-		'''
+			print(f"Original: {value['originalText']}")
+			print(f"Simplified: {actualValue}")
+			print(f"Explanation: {explanation}")
+			print(f"Time: {toc - tic:0.4f} seconds")
+			
+			#print(f"Original {value['originalText']}")
+			#print(f"Simplified {value['simplifiedText']}")
+		
 
 
 
