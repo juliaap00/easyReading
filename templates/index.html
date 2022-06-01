@@ -1,30 +1,132 @@
 <html>
     <head>
-        <title>Python is awesome!</title>
+        <title>EasyReading</title>
     </head>
+    <style>
+    p    {color: black;}
+    .backgorund {
+    }
+
+    .button {
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+        display: block;
+        background-color: #008CBA;
+
+
+    }
+    .text {
+        color: black;
+        border: 1px;
+        border-style: solid;
+        border-color: black;
+        padding: 10px 10px;
+        height:10%;
+        width:100%;
+        font-size: 14px;
+        font-family: Georgia, serif;
+        margin-left: 5px;
+
+
+    }
+    .list {
+        height:10%;
+    }
+    .totalSection{
+        width:60%;
+
+    }
+    .serverResponse {
+        padding: 10px 10px;
+        font-size: 14px;
+        font-family: Georgia, serif;
+    }
+    .explanationSection,.simplifiedSection{
+        border: 1px;
+        border-style: solid;
+        border-color: black;
+    }
+
+</style>
     <body>
-        <h1>Perífrasis</h1>
-        <form action="{{url_for('index')}}" method="post">
-          <label>Escribe el texto:</label>
-          <input type="text" name="sourceText" id="text"/>
-          <input type="submit" id ="submitText" value="Listo" />
-        </form>
-        <h1>Simplificado</h1>
-        <p>{{outputText}}</p>
-        <p>Congratulations! The HTTP Server is working!</p>
-        <script>
-            $(document).ready(function(){
-              $("submit").click(function(){
-                $.post("demo_test_post.asp",
-                {
-                  id: 0,
-                  text:  document.getElementById("text").value
-                },
-                function(data,status){
-                  alert("Data: " + data + "\nStatus: " + status);
-                });
-              });
-            });
-        </script>
+        <h1>Simplificación Perífrasis</h1>
+        <div class="totalSection">
+            <h3>Escribe el texto:</h3>
+            <input class="text" type="text" name="sourceText" id="sourceText"/>
+            <h3>Escribe las perífrasis separadas por comas:</h3>
+            <input class="text list" type="text" name="list" id="list" />
+            <button class="button" id ="submitText" onclick="myFunction()" /> Simplificar</button>
+        
+            <div id="response" class = "response" style="display: none;">
+                <h3>Simplificada:</h3>
+                <div id="simplifiedTextSection" class="simplifiedSection" > 
+                    <p id="simplifiedText" class="serverResponse"> </p>
+                </div>
+                <h3>Explicación:</h3>
+                <div id="explanationSection" class="explanationSection" >
+                    <p id="explanation" class="serverResponse"> </p>
+                </div>
+            </div>
+        </div>
+
     </body>
+    <script>
+        let url = new URL('http://localhost:8080/simplifyPeriphrasis');
+        
+        function myFunction() {
+
+        var sourceText = document.getElementById("sourceText").value 
+        var list = document.getElementById("list").value 
+        if (sourceText == ''){
+            alert('Introduzca un texto')
+            return
+        }
+
+            url.searchParams.set('sourceText', sourceText);
+            url.searchParams.set('list', list);
+
+            const xhr = new XMLHttpRequest()
+            //open a get request with the remote server URL
+            xhr.open("GET", url)
+            //send the Http request
+            xhr.send()
+
+            //EVENT HANDLERS
+
+            //triggered when the response is completed
+            xhr.onload = function() {
+              if (xhr.status === 200) {
+                //parse JSON datax`x
+                data = JSON.parse(xhr.responseText)
+                
+                console.log(data.simplifiedText)
+                console.log(data.explanation)
+                document.getElementById("explanation").innerHTML = "<div id='explanation' class='serverResponse'>"+ data.explanation +"</div>"
+                 document.getElementById("simplifiedText").innerHTML = "<div id='explanation' class='serverResponse'>"+ data.simplifiedText +"</div>"
+
+
+                document.getElementById("response").style.display = 'block'
+                document.getElementById("explanation").style.display = 'block'
+                document.getElementById("simplifiedText").style.display = 'block'
+
+                document.getElementById("explanation").innerHTML.reload
+                document.getElementById("simplifiedText").innerHTML.reload
+
+
+              } else if (xhr.status === 404) {
+                console.log("No records found")
+              }
+            }
+
+        }
+
+
+
+    </script>
 </html>
