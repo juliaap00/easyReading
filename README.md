@@ -31,7 +31,7 @@ pip install Flask
     * contextAdder
         - context.py: add context to certain periphrasis 
         - dataContext.py: saves the type of the periphrasis and their correspondatn context
-    *simplifier
+    * simplifier
         - classifier.py: classifies periphrasis
         - conjugator.py: conjugates root verb with auxiliar verb morphology
         - dictionary.py: checks grammar of a certain word
