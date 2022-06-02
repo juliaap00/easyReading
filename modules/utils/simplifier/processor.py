@@ -51,7 +51,6 @@ def simplifyPeriphrasis(text, nlp, spell, default_conjugator):
 		tokenInfo = tokenToMap(token, nlp)
 
 		key = 'aux'
-		#tic = time.perf_counter()
 		if  tokenInfo['type'] == 'VERB' or tokenInfo['type'] == 'AUX' :
 			
 			lemma = getLemma(tokenInfo['text'], nlp)

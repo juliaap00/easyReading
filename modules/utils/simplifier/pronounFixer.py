@@ -1,6 +1,7 @@
 from modules.utils.simplifier.dictionary import isExsistantWord
 from modules.utils.simplifier.grammaticalData import reflexivePronouns, reflexiveSuffix
 from modules.utils.simplifier.wordProcessor import isVerb, getLemma, processToken, tokenToMap
+
 from pprint	import pprint
 
 
@@ -42,13 +43,9 @@ def checkReflexivePronouns(tokenMap, periphrasis, spell, nlp):
 			addPronoun(pronoun, text, subTokenMap, nlp, spell)
 
 
-def isReflexive(periphrasisMap, verb, text):
-	
+def isReflexive(periphrasisMap, verb):
 	if 'pron' in periphrasisMap['ROOT'].keys(): 
-		if 'Case=Dat' in periphrasisMap['ROOT']['pron']['morf']:
-			return f"{periphrasisMap['ROOT']['pron']['verb']}"
-		elif 'Case=Acc'in periphrasisMap['ROOT']['pron']['morf']:	
-			return f"{periphrasisMap['ROOT']['pron']['text']} {verb}"	
+		return f"{periphrasisMap['ROOT']['pron']['text']} {verb}"	
 	return verb
 
 def fixReflexiveVerbs(token, periphrasisMap, tokenInfo, spell):

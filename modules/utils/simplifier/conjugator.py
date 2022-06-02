@@ -66,14 +66,15 @@ def changeConjugation(periphrasisMap, text, spell, default_conjugator):
 		verb = conjug(periphrasisMap['aux'], periphrasisMap['ROOT']['lemma'], default_conjugator) if not isinstance(periphrasisMap['aux'], list) else conjugMultipleAux(periphrasisMap, text, spell, 'aux', default_conjugator)
 		returnVerbDict['verb'] = verb
 		returnVerbDict['explanation'] = f"Se ha simplificado la perífrasis '{periphrasisMap['periphrasisText']}' conjugando el verbo raíz '{periphrasisMap['ROOT']['lemma']}' con el tiempo verbal del auxiliar '{periphrasisMap['pattern']}'."
-		
+		print(periphrasisMap['ROOT']['lemma'])
 		returnVerb = addContext(periphrasisMap, returnVerbDict['verb'])
 
 		if isinstance(returnVerb, dict) and 'context' in returnVerb.keys() and 'explanation' in returnVerb.keys():
 			returnVerbDict['explanation'] = f"{returnVerbDict['explanation'][:-1]} {returnVerb['explanation']}"
 			returnVerbDict['context'] = returnVerb['context']
 
-	returnVerbDict['verb'] = isReflexive(periphrasisMap,returnVerbDict['verb'], text)
+	print(returnVerbDict['verb'])
+	returnVerbDict['verb'] = isReflexive(periphrasisMap,returnVerbDict['verb'])
 	return returnVerbDict
 	
 
@@ -106,24 +107,15 @@ def conjug(periphrasisMap, verb, default_conjugator):
 	morphologicMap = periphrasisMap['morf']
 	if morphologicMap['VerbForm'] != 'Inf' and morphologicMap['VerbForm'] != 'Ger' and morphologicMap['VerbForm'] != 'Part':
 		conjugationMap = generateConjug(periphrasisMap)
-		tic = time.perf_counter()
-
 		conjugatedVerb = default_conjugator.conjugate(verb).conjug_info[conjugationMap['Mood']][conjugationMap['Tense']][conjugationMap['Person']]
-		toc = time.perf_counter()
-		#print(f"		conjugate: {toc - tic:0.4f} seconds")
-		
 		return conjugatedVerb
 	
 	else:
 		conjugationMap = morphologicalMap[morphologicMap['VerbForm']]
-		tic = time.perf_counter()
 		if morphologicMap['VerbForm'] == 'Part':
 			conjugatedVerb = default_conjugator.conjugate(verb).conjug_info[conjugationMap[0]][conjugationMap[1]]
 		else:
 			conjugatedVerb = default_conjugator.conjugate(verb).conjug_info[conjugationMap[0]][conjugationMap[1]]['']
-
-		toc = time.perf_counter()
-		#print(f"		conjugate: {toc - tic:0.4f} seconds")
 		return conjugatedVerb
 	return verb
 
