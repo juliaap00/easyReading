@@ -45,7 +45,6 @@ def simplifyPeriphrasis(text, nlp, spell, default_conjugator):
 	periphrasisMap = dict()
 	periphrasisMap['periphrasisText'] = text
 	complementList = list()
-	tic1 = time.perf_counter()
 
 	for token in doc:
 		tokenInfo = tokenToMap(token, nlp)
@@ -99,7 +98,6 @@ def simplifyPeriphrasis(text, nlp, spell, default_conjugator):
 		periphrasisMap['complements'] = complementList;
 
 	
-	tic = time.perf_counter()
 	checkReflexivePronouns(periphrasisMap, text, spell, nlp)
 	periphrasisMap['typePeriphrasis'] = getPeriphrasisType(periphrasisMap)
 

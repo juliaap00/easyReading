@@ -2,7 +2,6 @@ from modules.utils.simplifier.dictionary import isExsistantWord
 from modules.utils.simplifier.grammaticalData import reflexivePronouns, reflexiveSuffix
 from modules.utils.simplifier.wordProcessor import isVerb, getLemma, processToken, tokenToMap
 
-from pprint	import pprint
 
 
 

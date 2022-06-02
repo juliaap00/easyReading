@@ -2,7 +2,6 @@ import mlconjug3
 from modules.utils.simplifier.grammaticalData import morphologicalMap, subjTerminations2
 from modules.utils.contextAdder.context import addContext
 from modules.utils.simplifier.pronounFixer import isReflexive
-import time
 
 
 def conjugMultipleAux(periphrasisMap, text, spell, tense, default_conjugator):
@@ -66,14 +65,12 @@ def changeConjugation(periphrasisMap, text, spell, default_conjugator):
 		verb = conjug(periphrasisMap['aux'], periphrasisMap['ROOT']['lemma'], default_conjugator) if not isinstance(periphrasisMap['aux'], list) else conjugMultipleAux(periphrasisMap, text, spell, 'aux', default_conjugator)
 		returnVerbDict['verb'] = verb
 		returnVerbDict['explanation'] = f"Se ha simplificado la perífrasis '{periphrasisMap['periphrasisText']}' conjugando el verbo raíz '{periphrasisMap['ROOT']['lemma']}' con el tiempo verbal del auxiliar '{periphrasisMap['pattern']}'."
-		print(periphrasisMap['ROOT']['lemma'])
 		returnVerb = addContext(periphrasisMap, returnVerbDict['verb'])
 
 		if isinstance(returnVerb, dict) and 'context' in returnVerb.keys() and 'explanation' in returnVerb.keys():
 			returnVerbDict['explanation'] = f"{returnVerbDict['explanation'][:-1]} {returnVerb['explanation']}"
 			returnVerbDict['context'] = returnVerb['context']
 
-	print(returnVerbDict['verb'])
 	returnVerbDict['verb'] = isReflexive(periphrasisMap,returnVerbDict['verb'])
 	return returnVerbDict
 	
